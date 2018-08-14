@@ -1,0 +1,29 @@
+{
+  "name": "spid",
+  "version": "0.1.0",
+  "description": "An opinionated benchmark runner tool.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/battila7/spid.git"
+  },
+  "author": "Attila Bagossy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/battila7/spid/issues"
+  },
+  "homepage": "https://github.com/battila7/spid#readme",
+  "keywords": [
+    "benchmark",
+    "performance",
+    "speed"
+  ],
+  "tags": [
+    "benchmark",
+    "performance",
+    "speed"
+  ]
+}
