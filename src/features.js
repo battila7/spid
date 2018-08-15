@@ -20,7 +20,7 @@ function isFeatureObject(obj) {
         return false;
     }
 
-    return obj.location && (typeof obj.location == 'string');
+    return obj.treeish && (typeof obj.treeish == 'string');
 }
 
 function extractFeatures(obj) {
