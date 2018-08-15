@@ -1,8 +1,10 @@
 #!/usr/bin/env node
+const path = require('path');
+
 const CMD_DIRNAME = 'cmd';
 
 require('yargs')
-    .commandDir(CMD_DIRNAME)
+    .commandDir(path.resolve(__dirname, CMD_DIRNAME))
     .demandCommand()
     .help()
     .strict()
