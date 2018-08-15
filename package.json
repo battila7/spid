@@ -25,5 +25,9 @@
     "benchmark",
     "performance",
     "speed"
-  ]
+  ],
+  "dependencies": {
+    "downson": "^0.2.0",
+    "yargs": "^12.0.1"
+  }
 }
