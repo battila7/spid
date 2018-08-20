@@ -28,6 +28,8 @@
   ],
   "dependencies": {
     "downson": "^0.2.0",
+    "execa": "^0.11.0",
+    "listr": "^0.14.1",
     "yargs": "^12.0.1"
   }
 }
