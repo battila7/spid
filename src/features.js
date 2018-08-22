@@ -20,7 +20,7 @@ function extractFeatures(obj) {
             if (isContainerObject(obj[key])) {
                 return inner(obj[key], keys.concat([key]));
             } else if (isFeatureObject(obj[key])) {
-                return result.push({
+                result.push({
                     keys: keys.concat(key),
                     data: obj[key]
                 });
