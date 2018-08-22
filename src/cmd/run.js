@@ -1,5 +1,7 @@
 const path = require('path');
 
+const { mkdir } = require('fs-extra');
+
 const { readFeatures } = require('../feature/read');
 const { runFeature } = require('../feature/run');
 
@@ -57,6 +59,10 @@ module.exports = {
                     .forEach(s => console.log('\t' + s));
 
                 return data;
+            })
+            .then(data => {
+                return mkdir(argv.resultDirectory)
+                    .then(data);
             })
             .then(data => {
                 const runOpts = {
