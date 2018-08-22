@@ -7,10 +7,6 @@ function isContainerObject(obj) {
 }
 
 function isFeatureObject(obj) {
-    if (Object.keys(obj).length > 1) {
-        return false;
-    }
-
     return obj.treeish && (typeof obj.treeish == 'string');
 }
 
@@ -37,6 +33,10 @@ function extractFeatures(obj) {
     return result;
 }
 
+function toFeatureData(obj) {
+    return Object.assign({}, { fixturesFile: 'fixtures.spid' }, obj);
+}
+
 function readFeatures() {
     return readDownson(FEATURES_FILENAME)
         .then(data => {
@@ -53,7 +53,7 @@ function readFeatures() {
         .then(data => {
             return {
                 description: data.description,
-                features: extractFeatures(data.features)
+                features: extractFeatures(data.features).map(toFeatureData)
             };
         });
 }
