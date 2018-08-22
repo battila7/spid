@@ -1,4 +1,7 @@
+const path = require('path');
+
 const { readFeatures } = require('../feature/read');
+const { runFeature } = require('../feature/run');
 
 function arrayStartsWith(prefix, arr) {
     if (prefix.length > arr.length) {
@@ -11,6 +14,21 @@ function arrayStartsWith(prefix, arr) {
 module.exports = {
     command: 'run [keys...]',
     desc: 'Run the specified benchmarks. If no keys are specified, then all benchmarks will be run.',
+    builder(yargs) {
+        return yargs
+            .option('checkoutDirectory', {
+                alias: 'c',
+                type: 'string',
+                default: path.join(process.cwd(), 'spid-checkout'),
+                describe: 'The directory into which the code will be checked out.'
+            })
+            .options('resultDirectory', {
+                alias: 'r',
+                type: 'string',
+                default: path.join(process.cwd(), 'spid-result'),
+                describe: 'The directory into which the benchmark results will be saved.'
+            })
+    },
     handler(argv) {
         const selectedKeys = argv.keys || [];
         
@@ -37,6 +55,31 @@ module.exports = {
                 data.features
                     .map(f => f.keys.join(' ') + '\ttree-ish: ' + f.data.treeish)
                     .forEach(s => console.log('\t' + s));
-            });
+
+                return data;
+            })
+            .then(data => {
+                const runOpts = {
+                    remote: data.description.remote,
+                    checkoutDirectory: argv.checkoutDirectory,
+                    resultDirectory: argv.resultDirectory
+                };
+
+                function reduceCallback(acc, curr) {
+                    function runNext(prevResult) {
+                        return runFeature(curr, runOpts)
+                            .then(currentResult => prevResult && currentResult);
+                    };
+
+                    return acc.then(runNext);
+                }
+
+                return data.features.reduce(reduceCallback, Promise.resolve(true));
+            })
+            .then(result => {
+                if (!result) {
+                    process.exit(1);
+                }
+            })
     }
 };
