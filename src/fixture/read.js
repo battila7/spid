@@ -8,13 +8,22 @@ function extractFixtures(obj) {
 function readFixtures(filename) {
     return readDownson(filename)
         .then(data => {
+            if (!data.description) {
+                throw new Error('The features file has no top-level description key!');
+            }
+
             if (!data.fixtures) {
                 throw new Error('The fixtures file has no top-level fixtures key!');
             }
 
-            return data.fixtures;
+            return data;
         })
-        .then(extractFixtures);
+        .then(data => {
+            return {
+                description: data.description,
+                fixtures: extractFixtures(data.fixtures)
+            };
+        });
 }
 
 module.exports = {
