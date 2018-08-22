@@ -21,17 +21,20 @@ module.exports = {
 
                 process.exit(1);
             })
-            .then(features => {
-                return features.filter(f => arrayStartsWith(selectedKeys, f.keys))
+            .then(data => {
+                return {
+                    description: data.description,
+                    features: data.features.filter(f => arrayStartsWith(selectedKeys, f.keys))
+                };
             })
-            .then(features => {
-                if (features.length == 0) {
+            .then(data => {
+                if (data.features.length == 0) {
                     console.log('No matching benchmarks found!');
                     process.exit(1);
                 }
 
                 console.log('Selected features:\n');
-                features
+                data.features
                     .map(f => f.keys.join(' ') + '\ttree-ish: ' + f.data.treeish)
                     .forEach(s => console.log('\t' + s));
             });

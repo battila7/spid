@@ -40,13 +40,22 @@ function extractFeatures(obj) {
 function readFeatures() {
     return readDownson(FEATURES_FILENAME)
         .then(data => {
+            if (!data.description) {
+                throw new Error('The features file has no top-level description key!');
+            }
+
             if (!data.features) {
                 throw new Error('The features file has no top-level features key!');
             }
 
-            return data.features;
+            return data;
         })
-        .then(extractFeatures)
+        .then(data => {
+            return {
+                description: data.description,
+                features: extractFeatures(data.features)
+            };
+        });
 }
 
 module.exports = {

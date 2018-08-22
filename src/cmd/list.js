@@ -5,10 +5,10 @@ module.exports = {
     desc: 'List available features.',
     handler() {
         readFeatures()
-            .then(features => {
+            .then(data => {
                 console.log('Available features:\n');
 
-                features
+                data.features
                     .map(f => f.keys.join(' ') + '\ttree-ish: ' + f.data.treeish)
                     .forEach(s => console.log('\t' + s));
             })
