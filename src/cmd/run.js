@@ -1,4 +1,4 @@
-const { readFeatures } = require('../features');
+const { readFeatures } = require('../feature/read');
 
 function arrayStartsWith(prefix, arr) {
     if (prefix.length > arr.length) {
@@ -18,7 +18,7 @@ module.exports = {
             .catch(err => {
                 console.log('Could not read the list of available features:');
                 console.log(err);
-                
+
                 process.exit(1);
             })
             .then(features => {

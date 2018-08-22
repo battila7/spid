@@ -1,4 +1,4 @@
-const { readDownson } = require('./downson');
+const { readDownson } = require('../downson');
 
 const FEATURES_FILENAME = 'features.spid';
 

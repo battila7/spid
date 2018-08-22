@@ -1,4 +1,4 @@
-const { readFeatures } = require('../features');
+const { readFeatures } = require('../feature/read');
 
 module.exports = {
     command: 'list',
