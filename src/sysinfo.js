@@ -2,15 +2,6 @@ const si = require('systeminformation');
 
 const sysinfo = {};
 
-(function addTime() {
-    const time = si.time();
-
-    sysinfo.time = {
-        current: time.current,
-        timezone: time.timezone
-    };
-})();
-
 const cpu = si.cpu()
     .then(function addCpu(cpu) {
         sysinfo.cpu = {
@@ -18,7 +9,7 @@ const cpu = si.cpu()
             brand: cpu.brand,
             speed: cpu.speed,
             cores: cpu.cores,
-            family: cpu.familiy,
+            family: cpu.family,
             model: cpu.model
         };
     });
