@@ -1,6 +1,7 @@
 const path = require('path');
 
 const { mkdir } = require('fs-extra');
+const uuidv4 = require('uuid/v4');
 
 const { readFeatures } = require('../feature/read');
 const { runFeature } = require('../feature/run');
@@ -66,8 +67,11 @@ module.exports = {
             .then(data => {
                 const options = Object.assign({}, data.description, {
                     checkoutDirectory: argv.checkoutDirectory,
-                    resultDirectory: argv.resultDirectory
+                    resultDirectory: argv.resultDirectory,
+                    uuid: uuidv4()
                 });
+
+                console.log('This run has the following id: ' + options.uuid + '\n');
 
                 function reduceCallback(acc, curr) {
                     function runNext(prevResult) {
