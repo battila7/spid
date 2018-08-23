@@ -1,4 +1,5 @@
 const path = require('path');
+const { readJson, remove } = require('fs-extra');
 
 const execa = require('execa');
 
@@ -27,7 +28,7 @@ function runner(fixture, feature, options) {
     const jar = path.resolve(options.checkoutDirectory, fixture.data.runnerSettings.jarFile || options.jarFile);
     const benchmark = fixture.data.runnerSettings.benchmark || options.benchmark;
 
-    const resultFile = feature.keys.join('_') + fixture.key + '.json';
+    const resultFile = path.join(options.resultDirectory, fixture.key + '.temp.json');
 
     return execa('mvn', ['clean', 'install', '-Dmaven.test.skip=true'], { cwd: baseDirectory, stdio: 'inherit' })
         .then(() => {
@@ -36,8 +37,12 @@ function runner(fixture, feature, options) {
                 benchmark,
                 ...createJmhArgs(fixture.data.runnerSettings),
                 ...createParameters(fixture.data.parameters),
-                '-rff', path.resolve(options.resultDirectory, resultFile)
+                '-rff', resultFile
             ], { stdio: 'inherit' });
+        })
+        .then(() => readJson(resultFile))
+        .then(resultObj => {
+            return remove(resultFile).then(() => resultObj);
         });
 }
 

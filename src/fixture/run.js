@@ -1,3 +1,7 @@
+const path = require('path');
+
+const { writeJson } = require('fs-extra');
+
 const { getRunner } = require('../runner');
 
 function runFixture(fixture, feature, options) {
@@ -9,7 +13,19 @@ function runFixture(fixture, feature, options) {
         throw new Error('Runner "'  + name + '" not found!');
     }
 
-    return runner(fixture, feature, options);
+    const resultFile = path.join(options.resultDirectory, fixture.key + '.json');
+
+    return runner(fixture, feature, options)
+        .then(result => {
+            return {
+                feature,
+                fixture,
+                uuid: options.uuid,
+                sysinfo: options.sysinfo,
+                result
+            };
+        })
+        .then(obj => writeJson(resultFile, obj));
 }
 
 module.exports = {
