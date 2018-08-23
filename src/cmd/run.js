@@ -3,6 +3,8 @@ const path = require('path');
 const { mkdir } = require('fs-extra');
 const uuidv4 = require('uuid/v4');
 
+const sysinfo = require('../sysinfo');
+
 const { readFeatures } = require('../feature/read');
 const { runFeature } = require('../feature/run');
 
@@ -35,7 +37,7 @@ module.exports = {
     handler(argv) {
         const selectedKeys = argv.keys || [];
         
-        readFeatures()
+        const featureDataPromise = readFeatures()
             .catch(err => {
                 console.log('Could not read the list of available features:');
                 console.log(err);
@@ -63,12 +65,23 @@ module.exports = {
             })
             .then(data => {
                 return mkdir(argv.resultDirectory).then(data, () => data);
-            })
-            .then(data => {
+            });
+
+        const sysinfoPromise = sysinfo()
+            .then(info => {
+                console.log('Host has the following parameters:');
+                console.log(JSON.stringify(info, null, 2));
+
+                return info
+            });
+
+        Promise.all([featureDataPromise, sysinfoPromise])
+            .then(([data, info]) => {
                 const options = Object.assign({}, data.description, {
                     checkoutDirectory: argv.checkoutDirectory,
                     resultDirectory: argv.resultDirectory,
-                    uuid: uuidv4()
+                    uuid: uuidv4(),
+                    sysinfo: info
                 });
 
                 console.log('This run has the following id: ' + options.uuid + '\n');
