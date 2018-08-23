@@ -23,7 +23,7 @@ function runFixtures({ description, fixtures }, feature, baseOptions) {
 function runFeature(feature, baseOptions) {
     console.log('\nBenchmarking feature: ' + feature.keys.join(' ') + '\n');
 
-    const featureResultDirectory =  feature.keys.join('_') + '_' + options.uuid;
+    const featureResultDirectory =  path.join(baseOptions.resultDirectory, feature.keys.join('_') + '_' + baseOptions.uuid);
 
     const options = Object.assign({}, baseOptions, { resultDirectory: featureResultDirectory });
 
@@ -31,7 +31,7 @@ function runFeature(feature, baseOptions) {
 
     return clone(options.remote, options.checkoutDirectory)
         .then(() => checkout(options.remote, feature.data.treeish, options.checkoutDirectory))
-        .then(() => mkdir(path.join(options.resultDirectory, featureResultDirectory)))
+        .then(() => mkdir(options.resultDirectory))
         .then(() => readFixtures(path.resolve(options.checkoutDirectory, feature.data.fixturesFile)))
         .then(fixtures => runFixtures(fixtures, feature, options))
         .then(() => finallyFunc().then(true))
