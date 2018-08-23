@@ -23,7 +23,6 @@ function createParameters(additionalSettings) {
 }
 
 function runner(fixture, feature, options) {
-    console.log(options);
     const baseDirectory = path.resolve(options.checkoutDirectory, options.baseDirectory);
     const jar = path.resolve(options.checkoutDirectory, fixture.data.runnerSettings.jarFile || options.jarFile);
     const benchmark = fixture.data.runnerSettings.benchmark || options.benchmark;

@@ -29,7 +29,7 @@ module.exports = {
                 type: 'string',
                 default: path.join(process.cwd(), 'spid-result'),
                 describe: 'The directory into which the benchmark results will be saved.'
-            })
+            });
     },
     handler(argv) {
         const selectedKeys = argv.keys || [];
@@ -64,15 +64,14 @@ module.exports = {
                 return mkdir(argv.resultDirectory).then(data, () => data);
             })
             .then(data => {
-                const runOpts = {
-                    remote: data.description.remote,
+                const options = Object.assign({}, data.description, {
                     checkoutDirectory: argv.checkoutDirectory,
                     resultDirectory: argv.resultDirectory
-                };
+                });
 
                 function reduceCallback(acc, curr) {
                     function runNext(prevResult) {
-                        return runFeature(curr, runOpts)
+                        return runFeature(curr, options)
                             .then(currentResult => prevResult && currentResult);
                     };
 

@@ -9,10 +9,10 @@ const { runFixture } = require('../fixture/run');
 const { readFixtures } = require('../fixture/read');
 
 function runFixtures({ description, fixtures }, feature, baseOptions) {
-    const runOpts = Object.assign({}, baseOptions, description, baseOptions);
+    const options = Object.assign({}, description, baseOptions);
 
     function reduceCallback(acc, curr) {
-        return acc.then(() => runFixture(curr, feature, runOpts));
+        return acc.then(() => runFixture(curr, feature, options));
     }
 
     return fixtures.reduce(reduceCallback, Promise.resolve());
@@ -26,7 +26,7 @@ function runFeature(feature, options) {
     return clone(options.remote, options.checkoutDirectory)
         .then(() => checkout(options.remote, feature.data.treeish, options.checkoutDirectory))
         .then(() => readFixtures(path.resolve(options.checkoutDirectory, feature.data.fixturesFile)))
-        .then(data => runFixtures(data, feature, options))
+        .then(fixtures => runFixtures(fixtures, feature, options))
         .then(() => finallyFunc().then(true))
         .catch(err => {
             console.log('Error benchmarking feature');

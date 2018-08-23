@@ -15,6 +15,8 @@ module.exports = {
             .catch(err => {
                 console.log('Could not read the list of available features:');
                 console.log(err);
+
+                process.exit(1);
             });
     }
 };
