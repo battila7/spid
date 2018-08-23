@@ -61,8 +61,7 @@ module.exports = {
                 return data;
             })
             .then(data => {
-                return mkdir(argv.resultDirectory)
-                    .then(data);
+                return mkdir(argv.resultDirectory).then(data, () => data);
             })
             .then(data => {
                 const runOpts = {

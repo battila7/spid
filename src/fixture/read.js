@@ -1,4 +1,4 @@
-const { readDownson } = require('./downson');
+const { readDownson } = require('../downson');
 
 function extractFixtures(obj) {
     return Object.keys(obj)

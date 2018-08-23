@@ -16,7 +16,7 @@ module.exports = (function setup() {
     runnerFiles
         .map(f => './' + f)
         .map(require)
-        .then(setup => setup(registerRunner))
+        .forEach(setup => setup(registerRunner));
 
     return {
         getRunner

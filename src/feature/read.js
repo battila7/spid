@@ -34,7 +34,11 @@ function extractFeatures(obj) {
 }
 
 function toFeatureData(obj) {
-    return Object.assign({}, { fixturesFile: 'fixtures.spid' }, obj);
+    if (!obj.data.fixturesFile) {
+        obj.data.fixturesFile = 'fixtures.spid';
+    }
+
+    return obj;
 }
 
 function readFeatures() {

@@ -6,8 +6,10 @@ function runFixture(fixture, feature, options) {
     console.log('Running fixture: ' + fixture.key);
 
     if (!runner) {
-        throw new Error('Runner "'  + runner + '" not found!');
+        throw new Error('Runner "'  + name + '" not found!');
     }
+
+    return runner(fixture, feature, options);
 }
 
 module.exports = {
