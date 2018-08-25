@@ -10,7 +10,7 @@ function runFixture(fixture, feature, options) {
     console.log('Running fixture: ' + fixture.key);
 
     if (!runner) {
-        throw new Error('Runner "'  + name + '" not found!');
+        throw new Error('Runner "'  + options.runner + '" not found!');
     }
 
     const resultFile = path.join(options.resultDirectory, fixture.key + '.json');
