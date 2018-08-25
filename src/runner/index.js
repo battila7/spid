@@ -1,7 +1,8 @@
 const runnerMap = new Map();
 
 const runnerFiles = [
-    'mavenJmhRunner'
+    'mavenJmhRunner',
+    'googleBenchmarkRunner'
 ];
 
 function registerRunner(name, runner) {
