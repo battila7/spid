@@ -29,12 +29,27 @@ function runner(fixture, feature, options) {
     const cleanupScript = path.resolve(baseDirectory, options.cleanupScript);
     const executable = path.resolve(baseDirectory, options.executable);
 
+    const exec = options.runWith || executable;
+
+    let args = [];
+
+    if (options.runWith) {
+        args.push(options.executable);
+    }
+
+    args = args.concat(createGbArgs(fixture.data.runnerSettings), createParameters(fixture.data.parameters));
+
+    let opts = {
+        stdio: [ 'inherit', 'pipe', 'inherit' ]
+    };
+
+    if (options.runWith) {
+        opts.cwd = baseDirectory;
+    };
+
     return execa(options.shell, [ setupScript ], { cwd: baseDirectory, stdio: 'inherit' })
         .then(() => {
-            return execa(executable, [
-                ...createGbArgs(fixture.data.runnerSettings),
-                ...createParameters(fixture.data.parameters),
-            ], { stdio: [ 'inherit', 'pipe', 'inherit' ] });
+            return execa(exec, args, opts);
         })
         .then(resultObj => {
             return execa(options.shell, [ cleanupScript], { cwd: baseDirectory, stdio: 'inherit' }).then(() => resultObj.stdout);
