@@ -14,7 +14,7 @@ function extractFeatures(obj) {
     function inner(obj, keys) {
         for (let key in obj) {
             if (isContainerObject(obj[key])) {
-                return inner(obj[key], keys.concat([key]));
+                inner(obj[key], keys.concat([key]));
             } else if (isFeatureObject(obj[key])) {
                 result.push({
                     keys: keys.concat(key),
