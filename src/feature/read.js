@@ -1,6 +1,6 @@
 const { readDownson } = require('../downson');
 
-const FEATURES_FILENAME = 'features.spid';
+const FEATURES_FILENAME = 'features.md';
 
 function isContainerObject(obj) {
     return Object.keys(obj).every(k => obj[k] !== null && (typeof obj[k] == 'object'));
